@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Users, Calendar, Heart, MessageSquare, User } from "lucide-react";
+import { Menu, X, Calendar, Heart, MessageSquare, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ecobaLogo from "@/assets/ecoba-logo.png";
 
 const navLinks = [
   { href: "/", label: "Home", icon: null },
@@ -21,13 +22,11 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center group-hover:bg-forest-light transition-colors">
-              <Users className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg text-foreground leading-tight">ECOBA</span>
-              <span className="text-xs text-muted-foreground leading-tight">CONNECT</span>
-            </div>
+            <img 
+              src={ecobaLogo} 
+              alt="ECOBA Logo" 
+              className="h-12 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
