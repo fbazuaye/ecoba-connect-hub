@@ -11,8 +11,8 @@ import {
   GraduationCap,
   Globe,
   Award,
-  TrendingUp,
-  CheckCircle2
+  ShoppingBag,
+  Star
 } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
 
@@ -95,6 +95,49 @@ const upcomingEvents = [
     date: "April 5, 2024",
     location: "Abuja, Nigeria",
     price: "₦15,000",
+  },
+];
+
+const merchandise = [
+  {
+    id: 1,
+    name: "ECOBA Classic Polo Shirt",
+    price: "₦15,000",
+    originalPrice: "₦18,000",
+    image: "https://images.unsplash.com/photo-1625910513413-5fc66f8e8a6e?w=400&h=400&fit=crop",
+    rating: 4.8,
+    reviews: 124,
+    badge: "Best Seller",
+  },
+  {
+    id: 2,
+    name: "Alumni Varsity Jacket",
+    price: "₦35,000",
+    originalPrice: null,
+    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop",
+    rating: 4.9,
+    reviews: 89,
+    badge: "New Arrival",
+  },
+  {
+    id: 3,
+    name: "ECOBA Branded Cap",
+    price: "₦8,000",
+    originalPrice: "₦10,000",
+    image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&h=400&fit=crop",
+    rating: 4.7,
+    reviews: 256,
+    badge: null,
+  },
+  {
+    id: 4,
+    name: "Premium Coffee Mug",
+    price: "₦5,500",
+    originalPrice: null,
+    image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&h=400&fit=crop",
+    rating: 4.6,
+    reviews: 178,
+    badge: "Popular",
   },
 ];
 
@@ -301,8 +344,111 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Merchandise Section */}
       <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="text-gold font-semibold text-sm uppercase tracking-wider mb-2 block">
+                Shop Alumni Merch
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Official ECOBA Merchandise
+              </h2>
+              <p className="text-muted-foreground mt-2 max-w-xl">
+                Show your alumni pride with our exclusive collection of branded merchandise.
+              </p>
+            </motion.div>
+            <Button variant="outline" className="mt-4 md:mt-0">
+              <ShoppingBag className="w-4 h-4" />
+              View All Products
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {merchandise.map((item, index) => (
+              <motion.div
+                key={item.id}
+                className="group bg-card rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="relative aspect-square overflow-hidden bg-muted">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  {item.badge && (
+                    <span className="absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full bg-gold text-forest-dark">
+                      {item.badge}
+                    </span>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-4 group-hover:translate-y-0">
+                    <Button className="w-full" size="sm">
+                      <ShoppingBag className="w-4 h-4" />
+                      Add to Cart
+                    </Button>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <div className="flex items-center gap-1 mb-2">
+                    <Star className="w-4 h-4 fill-gold text-gold" />
+                    <span className="text-sm font-medium text-foreground">{item.rating}</span>
+                    <span className="text-sm text-muted-foreground">({item.reviews})</span>
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    {item.name}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-primary">{item.price}</span>
+                    {item.originalPrice && (
+                      <span className="text-sm text-muted-foreground line-through">
+                        {item.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            className="mt-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center gap-6 px-8 py-4 rounded-2xl bg-muted/50 border border-border">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-foreground">100%</div>
+                <div className="text-xs text-muted-foreground">Authentic</div>
+              </div>
+              <div className="w-px h-10 bg-border" />
+              <div className="text-center">
+                <div className="text-2xl font-bold text-foreground">Free</div>
+                <div className="text-xs text-muted-foreground">Delivery ₦50k+</div>
+              </div>
+              <div className="w-px h-10 bg-border" />
+              <div className="text-center">
+                <div className="text-2xl font-bold text-foreground">7 Days</div>
+                <div className="text-xs text-muted-foreground">Returns</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-muted/50">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center max-w-2xl mx-auto mb-16"
