@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Users, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import ecobaLogo from "@/assets/ecoba-logo.png";
 
 const footerLinks = {
   platform: [
@@ -31,13 +32,11 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gold flex items-center justify-center">
-                <Users className="w-5 h-5 text-forest-dark" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-lg leading-tight">ECOBA</span>
-                <span className="text-xs text-primary-foreground/70 leading-tight">CONNECT</span>
-              </div>
+              <img 
+                src={ecobaLogo} 
+                alt="ECOBA Logo" 
+                className="h-16 w-auto object-contain"
+              />
             </Link>
             <p className="text-primary-foreground/70 text-sm mb-6">
               Connecting alumni, building futures. Join our thriving community of graduates making an impact.
