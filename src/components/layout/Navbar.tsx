@@ -21,12 +21,16 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-3 group">
             <img 
               src={ecobaLogo} 
               alt="ECOBA Logo" 
-              className="h-12 w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
+            <div className="hidden sm:flex flex-col">
+              <span className="font-bold text-lg text-primary leading-tight tracking-tight">ECOBA</span>
+              <span className="text-xs font-semibold text-gold leading-tight tracking-widest">CONNECT</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
