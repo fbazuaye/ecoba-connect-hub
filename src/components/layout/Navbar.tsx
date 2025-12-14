@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Calendar, Heart, MessageSquare, User } from "lucide-react";
+import { Menu, X, Calendar, Heart, MessageSquare, User, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ecobaLogo from "@/assets/ecoba-logo.png";
 
@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/events", label: "Events", icon: Calendar },
   { href: "/donate", label: "Donate", icon: Heart },
   { href: "/groups", label: "Groups", icon: MessageSquare },
+  { href: "/ask-ai", label: "Ask AI", icon: Sparkles },
 ];
 
 export function Navbar() {
