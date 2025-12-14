@@ -9,6 +9,7 @@ import Donate from "./pages/Donate";
 import Groups from "./pages/Groups";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AskAI from "./pages/AskAI";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/events" element={<Events />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/groups" element={<Groups />} />
+          <Route path="/ask-ai" element={<AskAI />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
