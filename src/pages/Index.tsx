@@ -15,6 +15,7 @@ import {
   Star
 } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
+import ecobaPoloImage from "@/assets/ecoba-polo.jpg";
 
 const stats = [
   { value: "5,000+", label: "Alumni Members", icon: Users },
@@ -104,7 +105,7 @@ const merchandise = [
     name: "ECOBA Classic Polo Shirt",
     price: "₦15,000",
     originalPrice: "₦18,000",
-    image: "https://images.unsplash.com/photo-1625910513413-5fc66f8e8a6e?w=400&h=400&fit=crop",
+    image: ecobaPoloImage,
     rating: 4.8,
     reviews: 124,
     badge: "Best Seller",
