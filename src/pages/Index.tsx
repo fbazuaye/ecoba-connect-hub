@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
 import ecobaPoloImage from "@/assets/ecoba-polo.jpg";
+import ecobaCrest from "@/assets/ecoba-crest.png";
 
 const stats = [
   { value: "5,000+", label: "Alumni Members", icon: Users },
@@ -387,6 +388,14 @@ export default function Index() {
                     alt={item.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
+                  {/* School Crest Overlay */}
+                  <div className="absolute top-3 right-3 w-14 h-14 bg-background/90 backdrop-blur-sm rounded-full p-1.5 shadow-lg border border-gold/30 group-hover:scale-110 transition-transform duration-300">
+                    <img 
+                      src={ecobaCrest} 
+                      alt="ECOBA Crest" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   {item.badge && (
                     <span className="absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full bg-gold text-forest-dark">
                       {item.badge}
