@@ -15,8 +15,10 @@ import {
   Star
 } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
-import ecobaPoloImage from "@/assets/ecoba-polo.jpg";
-import ecobaCrest from "@/assets/ecoba-crest.png";
+import merchPolo from "@/assets/merch-polo.jpg";
+import merchJacket from "@/assets/merch-jacket.jpg";
+import merchCap from "@/assets/merch-cap.jpg";
+import merchMug from "@/assets/merch-mug.jpg";
 
 const stats = [
   { value: "5,000+", label: "Alumni Members", icon: Users },
@@ -106,17 +108,17 @@ const merchandise = [
     name: "ECOBA Classic Polo Shirt",
     price: "₦15,000",
     originalPrice: "₦18,000",
-    image: ecobaPoloImage,
+    image: merchPolo,
     rating: 4.8,
     reviews: 124,
     badge: "Best Seller",
   },
   {
     id: 2,
-    name: "Alumni Varsity Jacket",
+    name: "Alumni Leather Jacket",
     price: "₦35,000",
     originalPrice: null,
-    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop",
+    image: merchJacket,
     rating: 4.9,
     reviews: 89,
     badge: "New Arrival",
@@ -126,7 +128,7 @@ const merchandise = [
     name: "ECOBA Branded Cap",
     price: "₦8,000",
     originalPrice: "₦10,000",
-    image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&h=400&fit=crop",
+    image: merchCap,
     rating: 4.7,
     reviews: 256,
     badge: null,
@@ -136,7 +138,7 @@ const merchandise = [
     name: "Premium Coffee Mug",
     price: "₦5,500",
     originalPrice: null,
-    image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&h=400&fit=crop",
+    image: merchMug,
     rating: 4.6,
     reviews: 178,
     badge: "Popular",
@@ -388,14 +390,6 @@ export default function Index() {
                     alt={item.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  {/* School Crest Overlay */}
-                  <div className="absolute top-3 right-3 w-14 h-14 bg-background/90 backdrop-blur-sm rounded-full p-1.5 shadow-lg border border-gold/30 group-hover:scale-110 transition-transform duration-300">
-                    <img 
-                      src={ecobaCrest} 
-                      alt="ECOBA Crest" 
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
                   {item.badge && (
                     <span className="absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full bg-gold text-forest-dark">
                       {item.badge}
