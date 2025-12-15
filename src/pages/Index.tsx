@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
 import merchPolo from "@/assets/merch-polo.jpg";
-import merchJacket from "@/assets/merch-jacket.jpg";
+import merchHoodie from "@/assets/merch-hoodie.jpg";
 import merchCap from "@/assets/merch-cap.jpg";
 import merchMug from "@/assets/merch-mug.jpg";
 
@@ -115,10 +115,10 @@ const merchandise = [
   },
   {
     id: 2,
-    name: "Alumni Leather Jacket",
-    price: "₦35,000",
+    name: "Alumni Hoodie",
+    price: "₦25,000",
     originalPrice: null,
-    image: merchJacket,
+    image: merchHoodie,
     rating: 4.9,
     reviews: 89,
     badge: "New Arrival",
