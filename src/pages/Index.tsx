@@ -121,7 +121,7 @@ const merchandise = [
     image: merchHoodie,
     rating: 4.9,
     reviews: 89,
-    badge: "New Arrival",
+    badge: null,
   },
   {
     id: 3,
