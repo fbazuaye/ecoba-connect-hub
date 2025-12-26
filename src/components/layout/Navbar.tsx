@@ -1,9 +1,18 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Calendar, Heart, MessageSquare, User, Sparkles } from "lucide-react";
+import { Menu, X, Calendar, Heart, MessageSquare, User, Sparkles, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 import ecobaLogo from "@/assets/ecoba-logo.png";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { href: "/", label: "Home", icon: null },
@@ -16,6 +25,18 @@ const navLinks = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut, loading } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out",
+      description: "You have been successfully signed out.",
+    });
+    navigate("/");
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
@@ -54,19 +75,48 @@ export function Navbar() {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/login">
-              <Button variant="ghost" size="sm">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button 
-                size="sm"
-                className="bg-gold text-forest-dark hover:bg-gold-dark shadow-gold hover:shadow-lg font-bold"
-              >
-                Join Now
-              </Button>
-            </Link>
+            {loading ? (
+              <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
+            ) : user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="max-w-[120px] truncate">
+                      {user.email?.split("@")[0]}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem className="text-muted-foreground text-sm">
+                    {user.email}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button 
+                    size="sm"
+                    className="bg-gold text-forest-dark hover:bg-gold-dark shadow-gold hover:shadow-lg font-bold"
+                  >
+                    Join Now
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -100,20 +150,46 @@ export function Navbar() {
                 </Link>
               ))}
               <div className="border-t border-border my-2" />
-              <Link to="/login" onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" className="w-full justify-start" size="lg">
-                  <User className="w-4 h-4 mr-2" />
-                  Sign In
-                </Button>
-              </Link>
-              <Link to="/register" onClick={() => setIsOpen(false)}>
-                <Button 
-                  className="w-full bg-gold text-forest-dark hover:bg-gold-dark shadow-gold hover:shadow-lg font-bold" 
-                  size="lg"
-                >
-                  Join Now
-                </Button>
-              </Link>
+              {loading ? (
+                <div className="px-4 py-3">
+                  <div className="w-full h-10 bg-muted animate-pulse rounded-lg" />
+                </div>
+              ) : user ? (
+                <>
+                  <div className="px-4 py-2 text-sm text-muted-foreground">
+                    Signed in as {user.email}
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start text-destructive" 
+                    size="lg"
+                    onClick={() => {
+                      handleSignOut();
+                      setIsOpen(false);
+                    }}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" onClick={() => setIsOpen(false)}>
+                    <Button variant="ghost" className="w-full justify-start" size="lg">
+                      <User className="w-4 h-4 mr-2" />
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/register" onClick={() => setIsOpen(false)}>
+                    <Button 
+                      className="w-full bg-gold text-forest-dark hover:bg-gold-dark shadow-gold hover:shadow-lg font-bold" 
+                      size="lg"
+                    >
+                      Join Now
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

@@ -1,33 +1,90 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { z } from "zod";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Users, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+
+const loginSchema = z.object({
+  email: z.string().trim().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const { toast } = useToast();
+  const { signIn, user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+
+    // Validate inputs
+    const result = loginSchema.safeParse({ email, password });
+    if (!result.success) {
+      const fieldErrors: { email?: string; password?: string } = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0] === "email") fieldErrors.email = err.message;
+        if (err.path[0] === "password") fieldErrors.password = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
     setIsLoading(true);
 
-    // Simulate login - will be replaced with actual auth
-    setTimeout(() => {
+    const { error } = await signIn(email, password);
+
+    if (error) {
+      let message = "An error occurred during sign in.";
+      if (error.message.includes("Invalid login credentials")) {
+        message = "Invalid email or password. Please try again.";
+      } else if (error.message.includes("Email not confirmed")) {
+        message = "Please verify your email before signing in.";
+      }
+      
       toast({
-        title: "Login Successful",
-        description: "Welcome back to ECOBA CONNECT!",
+        title: "Sign In Failed",
+        description: message,
+        variant: "destructive",
       });
       setIsLoading(false);
-    }, 1500);
+      return;
+    }
+
+    toast({
+      title: "Welcome back!",
+      description: "You have successfully signed in.",
+    });
+    navigate("/");
   };
+
+  if (loading) {
+    return (
+      <Layout showFooter={false}>
+        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout showFooter={false}>
@@ -66,21 +123,18 @@ export default function Login() {
                     placeholder="your.email@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
+                    className={`pl-10 ${errors.email ? "border-destructive" : ""}`}
                     required
                   />
                 </div>
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email}</p>
+                )}
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link 
-                    to="/forgot-password" 
-                    className="text-sm text-primary hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -90,7 +144,7 @@ export default function Login() {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10"
+                    className={`pl-10 pr-10 ${errors.password ? "border-destructive" : ""}`}
                     required
                   />
                   <button
@@ -101,6 +155,9 @@ export default function Login() {
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
+                {errors.password && (
+                  <p className="text-sm text-destructive">{errors.password}</p>
+                )}
               </div>
 
               <Button 
