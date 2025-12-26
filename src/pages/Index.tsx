@@ -19,6 +19,8 @@ import merchPolo from "@/assets/merch-polo.jpg";
 import merchHoodie from "@/assets/merch-hoodie.jpg";
 import merchCap from "@/assets/merch-cap.jpg";
 import merchMug from "@/assets/merch-mug.jpg";
+import sponsorStarsz from "@/assets/sponsor-starsz.png";
+import sponsorZane from "@/assets/sponsor-zane.jpg";
 
 const stats = [
   { value: "5,000+", label: "Alumni Members", icon: Users },
@@ -446,6 +448,47 @@ export default function Index() {
                 <div className="text-2xl font-bold text-foreground">7 Days</div>
                 <div className="text-xs text-muted-foreground">Returns</div>
               </div>
+            </div>
+          </motion.div>
+
+          {/* Banner Adverts Section */}
+          <motion.div
+            className="mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="text-center mb-6">
+              <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
+                Our Trusted Partners
+              </span>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 lg:gap-16 p-6 rounded-2xl bg-card border border-border">
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center p-4 rounded-xl hover:bg-muted/50 transition-all duration-300"
+              >
+                <img 
+                  src={sponsorStarsz} 
+                  alt="Starsz Investments Company Limited" 
+                  className="h-16 md:h-20 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                />
+              </a>
+              <div className="hidden sm:block w-px h-16 bg-border" />
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center p-4 rounded-xl hover:bg-muted/50 transition-all duration-300"
+              >
+                <img 
+                  src={sponsorZane} 
+                  alt="Zane Energy Ltd" 
+                  className="h-16 md:h-20 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                />
+              </a>
             </div>
           </motion.div>
         </div>
