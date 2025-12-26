@@ -458,10 +458,10 @@ export default function Index() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="text-center mb-6">
-              <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 Our Trusted Partners
-              </span>
+              </h2>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 lg:gap-16 p-6 rounded-2xl bg-card border border-border">
               <a 
