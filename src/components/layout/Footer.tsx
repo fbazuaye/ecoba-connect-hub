@@ -35,7 +35,7 @@ export function Footer() {
               <img 
                 src={ecobaLogo} 
                 alt="ECOBA Logo" 
-                className="h-16 w-auto object-contain"
+                className="h-14 w-auto object-contain drop-shadow-md brightness-110"
               />
             </Link>
             <p className="text-primary-foreground/70 text-sm mb-6">
