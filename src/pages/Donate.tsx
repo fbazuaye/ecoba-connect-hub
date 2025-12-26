@@ -27,7 +27,7 @@ const causes = [
   {
     id: "infrastructure",
     icon: Building,
-    title: "Campus Development",
+    title: "Endowment Fund",
     description: "Contribute to building modern facilities and infrastructure for future students.",
     raised: 8750000,
     goal: 50000000,
@@ -35,7 +35,7 @@ const causes = [
   {
     id: "library",
     icon: BookOpen,
-    title: "Library Expansion",
+    title: "E-Library Expansion",
     description: "Help expand our library with new books, digital resources, and study spaces.",
     raised: 3200000,
     goal: 10000000,
