@@ -13,7 +13,7 @@ import {
   ArrowRight
 } from "lucide-react";
 
-const donationAmounts = [5000, 10000, 25000, 50000, 100000];
+const donationAmounts = [10000, 25000, 50000, 100000, 1000000];
 
 const causes = [
   {
@@ -63,6 +63,9 @@ export default function Donate() {
   const [selectedCause, setSelectedCause] = useState("scholarship");
 
   const formatCurrency = (amount: number) => {
+    if (amount >= 1000000) {
+      return `₦${(amount / 1000000).toFixed(0)}M`;
+    }
     return `₦${amount.toLocaleString()}`;
   };
 
@@ -96,7 +99,7 @@ export default function Donate() {
               <Heart className="w-8 h-8 text-gold" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-4">
-              Give Back to Your Community
+              Give Back to Your EC
             </h1>
             <p className="text-primary-foreground/80 text-lg">
               Your generous contribution helps support students, build facilities, 
