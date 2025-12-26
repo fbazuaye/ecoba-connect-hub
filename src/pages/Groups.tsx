@@ -3,6 +3,24 @@ import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Search, 
   Users, 
@@ -11,7 +29,8 @@ import {
   Briefcase,
   GraduationCap,
   Globe,
-  Plus
+  Plus,
+  Check
 } from "lucide-react";
 
 const groups = [
@@ -102,6 +121,49 @@ const categories = ["All", "Industry", "Class Year", "Location"];
 export default function Groups() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [joinedGroups, setJoinedGroups] = useState<number[]>([]);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [newGroupName, setNewGroupName] = useState("");
+  const [newGroupDescription, setNewGroupDescription] = useState("");
+  const [newGroupCategory, setNewGroupCategory] = useState("");
+  const { toast } = useToast();
+
+  const handleJoinGroup = (groupId: number, groupName: string) => {
+    if (joinedGroups.includes(groupId)) {
+      setJoinedGroups(joinedGroups.filter(id => id !== groupId));
+      toast({
+        title: "Left Group",
+        description: `You have left ${groupName}`,
+      });
+    } else {
+      setJoinedGroups([...joinedGroups, groupId]);
+      toast({
+        title: "Joined Group!",
+        description: `You are now a member of ${groupName}`,
+      });
+    }
+  };
+
+  const handleCreateGroup = () => {
+    if (!newGroupName.trim() || !newGroupDescription.trim() || !newGroupCategory) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all fields to create a group",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Group Created!",
+      description: `${newGroupName} has been created successfully. It will be reviewed and published soon.`,
+    });
+    
+    setNewGroupName("");
+    setNewGroupDescription("");
+    setNewGroupCategory("");
+    setCreateDialogOpen(false);
+  };
 
   const filteredGroups = groups.filter((group) => {
     const matchesSearch = group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -165,10 +227,59 @@ export default function Groups() {
               ))}
             </div>
 
-            <Button variant="gold">
-              <Plus className="w-4 h-4" />
-              Create Group
-            </Button>
+            <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="gold">
+                  <Plus className="w-4 h-4" />
+                  Create Group
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Create a New Group</DialogTitle>
+                  <DialogDescription>
+                    Start a community for alumni with shared interests, industries, or locations.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="group-name">Group Name</Label>
+                    <Input
+                      id="group-name"
+                      placeholder="e.g., Class of 2010"
+                      value={newGroupName}
+                      onChange={(e) => setNewGroupName(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="group-category">Category</Label>
+                    <Select value={newGroupCategory} onValueChange={setNewGroupCategory}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Industry">Industry</SelectItem>
+                        <SelectItem value="Class Year">Class Year</SelectItem>
+                        <SelectItem value="Location">Location</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="group-description">Description</Label>
+                    <Textarea
+                      id="group-description"
+                      placeholder="Describe what this group is about..."
+                      value={newGroupDescription}
+                      onChange={(e) => setNewGroupDescription(e.target.value)}
+                      rows={3}
+                    />
+                  </div>
+                </div>
+                <Button variant="gold" onClick={handleCreateGroup} className="w-full">
+                  Create Group
+                </Button>
+              </DialogContent>
+            </Dialog>
           </div>
 
           {/* Groups Grid */}
@@ -213,8 +324,20 @@ export default function Groups() {
                     </div>
                   </div>
 
-                  <Button variant="outline" size="sm" className="w-full">
-                    Join Group
+                  <Button 
+                    variant={joinedGroups.includes(group.id) ? "default" : "outline"} 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => handleJoinGroup(group.id, group.name)}
+                  >
+                    {joinedGroups.includes(group.id) ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Joined
+                      </>
+                    ) : (
+                      "Join Group"
+                    )}
                   </Button>
                 </div>
               </motion.article>
@@ -252,7 +375,7 @@ export default function Groups() {
               Create a new group for your class year, industry, or interest. 
               Bring together alumni who share your passions.
             </p>
-            <Button variant="gold" size="lg">
+            <Button variant="gold" size="lg" onClick={() => setCreateDialogOpen(true)}>
               <Plus className="w-5 h-5" />
               Start a New Group
             </Button>
