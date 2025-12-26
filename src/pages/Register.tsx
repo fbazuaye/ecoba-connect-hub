@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { z } from "zod";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,19 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+
+const registerSchema = z.object({
+  firstName: z.string().trim().min(1, "First name is required").max(50),
+  lastName: z.string().trim().min(1, "Last name is required").max(50),
+  email: z.string().trim().email("Please enter a valid email address"),
+  graduationYear: z.number().min(1960).max(new Date().getFullYear()),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
 
 const benefits = [
   "Access alumni directory & networking",
@@ -37,41 +51,94 @@ export default function Register() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const { toast } = useToast();
+  const { signUp, user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const currentYear = new Date().getFullYear();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!loading && user) {
+      navigate("/");
+    }
+  }, [user, loading, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+    // Clear error when user types
+    if (errors[e.target.name]) {
+      setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match.",
-        variant: "destructive",
+    setErrors({});
+
+    // Validate inputs
+    const result = registerSchema.safeParse({
+      ...formData,
+      graduationYear: parseInt(formData.graduationYear) || 0,
+    });
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        const field = err.path[0] as string;
+        fieldErrors[field] = err.message;
       });
+      setErrors(fieldErrors);
       return;
     }
 
     setIsLoading(true);
 
-    // Simulate registration - will be replaced with actual auth
-    setTimeout(() => {
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    const { error } = await signUp(
+      formData.email,
+      formData.password,
+      fullName,
+      parseInt(formData.graduationYear)
+    );
+
+    if (error) {
+      let message = "An error occurred during registration.";
+      if (error.message.includes("User already registered")) {
+        message = "An account with this email already exists. Please sign in instead.";
+      } else if (error.message.includes("Password")) {
+        message = error.message;
+      }
+      
       toast({
-        title: "Registration Successful!",
-        description: "Welcome to ECOBA CONNECT! Please check your email to verify your account.",
+        title: "Registration Failed",
+        description: message,
+        variant: "destructive",
       });
       setIsLoading(false);
-    }, 1500);
+      return;
+    }
+
+    toast({
+      title: "Welcome to ECOBA CONNECT!",
+      description: "Your account has been created successfully.",
+    });
+    navigate("/");
   };
 
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
+  if (loading) {
+    return (
+      <Layout showFooter={false}>
+        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout showFooter={false}>
@@ -148,10 +215,13 @@ export default function Register() {
                       placeholder="John"
                       value={formData.firstName}
                       onChange={handleChange}
-                      className="pl-10"
+                      className={`pl-10 ${errors.firstName ? "border-destructive" : ""}`}
                       required
                     />
                   </div>
+                  {errors.firstName && (
+                    <p className="text-sm text-destructive">{errors.firstName}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
@@ -162,8 +232,12 @@ export default function Register() {
                     placeholder="Doe"
                     value={formData.lastName}
                     onChange={handleChange}
+                    className={errors.lastName ? "border-destructive" : ""}
                     required
                   />
+                  {errors.lastName && (
+                    <p className="text-sm text-destructive">{errors.lastName}</p>
+                  )}
                 </div>
               </div>
 
@@ -178,10 +252,13 @@ export default function Register() {
                     placeholder="your.email@example.com"
                     value={formData.email}
                     onChange={handleChange}
-                    className="pl-10"
+                    className={`pl-10 ${errors.email ? "border-destructive" : ""}`}
                     required
                   />
                 </div>
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -197,10 +274,13 @@ export default function Register() {
                     max={currentYear}
                     value={formData.graduationYear}
                     onChange={handleChange}
-                    className="pl-10"
+                    className={`pl-10 ${errors.graduationYear ? "border-destructive" : ""}`}
                     required
                   />
                 </div>
+                {errors.graduationYear && (
+                  <p className="text-sm text-destructive">{errors.graduationYear}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -214,7 +294,7 @@ export default function Register() {
                     placeholder="Create a strong password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="pl-10 pr-10"
+                    className={`pl-10 pr-10 ${errors.password ? "border-destructive" : ""}`}
                     required
                     minLength={8}
                   />
@@ -226,6 +306,9 @@ export default function Register() {
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
+                {errors.password && (
+                  <p className="text-sm text-destructive">{errors.password}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -239,11 +322,14 @@ export default function Register() {
                     placeholder="Confirm your password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="pl-10"
+                    className={`pl-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
                     required
                     minLength={8}
                   />
                 </div>
+                {errors.confirmPassword && (
+                  <p className="text-sm text-destructive">{errors.confirmPassword}</p>
+                )}
               </div>
 
               <Button 
