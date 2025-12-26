@@ -87,12 +87,12 @@ const groups = [
   },
   {
     id: 8,
-    name: "Class of 2010",
-    description: "Celebrating over a decade since graduation. Stay in touch with old friends.",
+    name: "Benin Alumni Chapter",
+    description: "Connect with alumni in Benin City. Local events, networking, and community support.",
     members: 523,
     posts: 201,
-    category: "Class Year",
-    icon: GraduationCap,
+    category: "Location",
+    icon: MapPin,
     color: "bg-teal-500",
   },
 ];
