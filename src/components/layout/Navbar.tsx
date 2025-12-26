@@ -26,7 +26,7 @@ export function Navbar() {
             <img 
               src={ecobaLogo} 
               alt="ECOBA Logo" 
-              className="h-12 w-auto object-contain drop-shadow-sm"
+              className="h-20 w-auto object-contain drop-shadow-sm"
             />
             <div className="hidden sm:flex flex-col">
               <span className="font-bold text-lg text-primary leading-tight tracking-tight">ECOBA</span>
