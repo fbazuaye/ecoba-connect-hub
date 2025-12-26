@@ -458,8 +458,11 @@ export default function Index() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            <div className="text-center mb-10">
+              <span className="text-gold font-semibold text-sm uppercase tracking-wider mb-3 block">
+                Sponsored By
+              </span>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-foreground tracking-tight">
                 Our Trusted Partners
               </h2>
             </div>
