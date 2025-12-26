@@ -206,12 +206,12 @@ export default function Index() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <Link to="/register">
+              <a href="https://ecobacareerconnect.netlify.app/" target="_blank" rel="noopener noreferrer">
                 <Button variant="gold" size="xl">
-                  Join the Community
+                  Job/Employment Opportunity
                   <ArrowRight className="w-5 h-5" />
                 </Button>
-              </Link>
+              </a>
               <Link to="/events">
                 <Button variant="hero-outline" size="xl">
                   Explore Events
