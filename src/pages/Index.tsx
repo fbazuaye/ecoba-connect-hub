@@ -71,15 +71,15 @@ const testimonials = [
   },
   {
     quote: "The platform made it so easy to donate to the scholarship fund. Love seeing my contribution make a difference.",
-    author: "Chukwuemeka Obi",
-    role: "Class of 2008, Software Engineer",
-    avatar: "CO",
+    author: "Tongo Etafo",
+    role: "Class of 1975, Software Engineer",
+    avatar: "TE",
   },
   {
     quote: "Reconnecting with classmates after 10 years through this platform was life-changing.",
-    author: "Fatima Bello",
-    role: "Class of 2012, Medical Doctor",
-    avatar: "FB",
+    author: "Asaolu Odoko Fatima Bello",
+    role: "Class of 1987, Medical Doctor",
+    avatar: "AF",
   },
 ];
 
