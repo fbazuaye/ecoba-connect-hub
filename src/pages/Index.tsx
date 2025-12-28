@@ -77,9 +77,9 @@ const testimonials = [
   },
   {
     quote: "Reconnecting with classmates after 10 years through this platform was life-changing.",
-    author: "Asaolu Odoko Fatima Bello",
+    author: "Asaolu Odoko",
     role: "Class of 1987, Medical Doctor",
-    avatar: "AF",
+    avatar: "AO",
   },
 ];
 
